@@ -1,18 +1,18 @@
-public class ArrayDeque {
-    public int[] items;
+public class ArrayDeque<T> {
+    public T[] items;
     private int front;
     private int last;
     private int refactor = 2;
     private int maxSize = 16;
 
     public ArrayDeque() {
-        items = new int[maxSize];
+        items = (T[]) new Object[maxSize];
         front = 0;
         last = 0;
     }
 
-    public ArrayDeque(int i) {
-        items = new int[maxSize];
+    public ArrayDeque(T i) {
+        items = (T[]) new Object[maxSize];
         items[0] = i;
         front = maxSize - 1;
         last = 0;
@@ -22,7 +22,7 @@ public class ArrayDeque {
         return front - last == 0;
     }
 
-    public void addFirst(int i) {
+    public void addFirst(T i) {
         // 如果满了再resize，会导致无法分辨满的size和空size的情况
         if(maxSize - size() == 1){
             resize(1);
@@ -31,7 +31,7 @@ public class ArrayDeque {
         front = minusIndex(front);
     }
 
-    public void addLast(int i) {
+    public void addLast(T i) {
         if(maxSize - size() == 1){
             resize(1);
         }
@@ -39,7 +39,7 @@ public class ArrayDeque {
         items[last] = i;
     }
 
-    public int removeFirst() {
+    public T removeFirst() {
         if(needDecSize()) {
             resize(0);
         }
@@ -48,11 +48,11 @@ public class ArrayDeque {
     }
 
 
-    public int removeLast() {
+    public T removeLast() {
         if(needDecSize()) {
             resize(0);
         }
-        int removeNum = items[last];
+        T removeNum = items[last];
         last = minusIndex(last);
         return removeNum;
     }
@@ -64,7 +64,7 @@ public class ArrayDeque {
         return last - front;
     }
 
-    public int get(int index){
+    public T get(int index){
         return items[(index + front + 1) % maxSize];
     }
 
@@ -73,7 +73,7 @@ public class ArrayDeque {
     }
 
     public void resize(int type) {
-        int[] itemsCopy = new int[maxSize];
+        T[] itemsCopy = (T[]) new Object[maxSize];
         int oldSize = size();
         int oldMaxSize = maxSize;
         System.arraycopy(items, 0, itemsCopy, 0, maxSize);
@@ -85,7 +85,7 @@ public class ArrayDeque {
         } else {
             maxSize *= refactor;
         }
-        items = new int[maxSize];
+        items = (T[]) new Object[maxSize];
         int i = (front+1) % oldMaxSize;
         int j = 0;
         while(j<oldSize) {

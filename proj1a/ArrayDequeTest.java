@@ -7,13 +7,13 @@ public class ArrayDequeTest {
     @Test
     public void testAdd(){
         //  starts from empty list
-        ArrayDeque emptyDeque = new ArrayDeque();
+        ArrayDeque<Integer> emptyDeque = new ArrayDeque<Integer>();
         emptyDeque.addFirst(2);
         emptyDeque.addLast(3);
         emptyDeque.addFirst(1);
         emptyDeque.addLast(4);
         for(int i=0; i<4; i+=1){
-            assertEquals(i+1, emptyDeque.get(i));
+            assertEquals(new Integer(i+1), emptyDeque.get(i));
         }
         assertEquals(4, emptyDeque.size());
 
