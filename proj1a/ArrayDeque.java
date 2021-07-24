@@ -19,7 +19,7 @@ public class ArrayDeque<T> {
         // 如果满了再resize，会导致无法分辨满的size和空size的情况
         if (maxSize - size() == 1) {
             resize(1);
-    }
+        }
         items[front] = i;
         front = minusIndex(front);
     }
@@ -63,7 +63,7 @@ public class ArrayDeque<T> {
         return last - front;
     }
 
-    public T get(int index){
+    public T get(int index) {
         return items[(index + front + 1) % maxSize];
     }
 
@@ -78,7 +78,7 @@ public class ArrayDeque<T> {
     }
 
     private boolean needDecSize() {
-        return (maxSize > 16) && ((4*size() - maxSize) <= 0);
+        return (maxSize > 16) && ((4 * size() - maxSize) <= 0);
     }
 
     private void resize(int type) {
@@ -95,18 +95,18 @@ public class ArrayDeque<T> {
             maxSize *= refactor;
         }
         items = (T[]) new Object[maxSize];
-        int i = (front+1) % oldMaxSize;
+        int i = (front + 1) % oldMaxSize;
         int j = 0;
         while (j < oldSize) {
             items[j] = itemsCopy[i];
             j += 1;
-            i = (i+1) % oldMaxSize;
+            i = (i + 1) % oldMaxSize;
         }
         front = maxSize - 1;
         last = oldSize - 1;
     }
 
-    private int minusIndex(int index){
+    private int minusIndex(int index) {
         if (index == 0) {
             return maxSize - 1;
         }
