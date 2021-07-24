@@ -1,5 +1,5 @@
 public class ArrayDeque<T> {
-    public T[] items;
+    private T[] items;
     private int front;
     private int last;
     private int refactor = 2;
@@ -11,28 +11,21 @@ public class ArrayDeque<T> {
         last = 0;
     }
 
-    public ArrayDeque(T i) {
-        items = (T[]) new Object[maxSize];
-        items[0] = i;
-        front = maxSize - 1;
-        last = 0;
-    }
-
     public boolean isEmpty() {
         return front - last == 0;
     }
 
     public void addFirst(T i) {
         // 如果满了再resize，会导致无法分辨满的size和空size的情况
-        if(maxSize - size() == 1){
+        if (maxSize - size() == 1) {
             resize(1);
-        }
+    }
         items[front] = i;
         front = minusIndex(front);
     }
 
     public void addLast(T i) {
-        if(maxSize - size() == 1){
+        if (maxSize - size() == 1) {
             resize(1);
         }
         last = plusIndex(last);
@@ -40,7 +33,10 @@ public class ArrayDeque<T> {
     }
 
     public T removeFirst() {
-        if(needDecSize()) {
+        if (size() == 0) {
+            throwException();
+        }
+        if (needDecSize()) {
             resize(0);
         }
         front = plusIndex(front);
@@ -49,7 +45,10 @@ public class ArrayDeque<T> {
 
 
     public T removeLast() {
-        if(needDecSize()) {
+        if (size() == 0) {
+            throwException();
+        }
+        if (needDecSize()) {
             resize(0);
         }
         T removeNum = items[last];
@@ -58,7 +57,7 @@ public class ArrayDeque<T> {
     }
 
     public int size() {
-        if(front > last){
+        if (front > last) {
             return last + maxSize - front;
         }
         return last - front;
@@ -68,18 +67,28 @@ public class ArrayDeque<T> {
         return items[(index + front + 1) % maxSize];
     }
 
-    public boolean needDecSize() {
+    public void printDeque() {
+        int start = plusIndex(front);
+        int size = size();
+        for (int i = 0; i < size; i += 1) {
+            System.out.print(items[start]);
+            System.out.print(' ');
+            start = plusIndex(start);
+        }
+    }
+
+    private boolean needDecSize() {
         return (maxSize > 16) && ((4*size() - maxSize) <= 0);
     }
 
-    public void resize(int type) {
+    private void resize(int type) {
         T[] itemsCopy = (T[]) new Object[maxSize];
         int oldSize = size();
         int oldMaxSize = maxSize;
         System.arraycopy(items, 0, itemsCopy, 0, maxSize);
-        if(type == 0){
+        if (type == 0) {
             maxSize /= 2;
-            if(maxSize < 16) {
+            if (maxSize < 16) {
                 maxSize = 16;
             }
         } else {
@@ -88,7 +97,7 @@ public class ArrayDeque<T> {
         items = (T[]) new Object[maxSize];
         int i = (front+1) % oldMaxSize;
         int j = 0;
-        while(j<oldSize) {
+        while (j < oldSize) {
             items[j] = itemsCopy[i];
             j += 1;
             i = (i+1) % oldMaxSize;
@@ -97,15 +106,21 @@ public class ArrayDeque<T> {
         last = oldSize - 1;
     }
 
-    public int minusIndex(int index){
-        if(index == 0) {
+    private int minusIndex(int index){
+        if (index == 0) {
             return maxSize - 1;
         }
         return index - 1;
     }
 
-    public int plusIndex(int index) {
+    private int plusIndex(int index) {
         return (index + 1) % maxSize;
     }
+
+    private void throwException() {
+        ArrayIndexOutOfBoundsException  exception = new ArrayIndexOutOfBoundsException();
+        throw exception;
+    }
+
 
 }
