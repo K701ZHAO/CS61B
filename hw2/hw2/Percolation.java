@@ -74,7 +74,6 @@ public class Percolation {
             int[] pos = find(row1, col1);
             fullInd[pos[0]][pos[1]] = full;
             toBottom[pos[0]][pos[1]] = bottom;
-            if (bottom && full) percolated = true;
         }
     }
 
@@ -129,11 +128,11 @@ public class Percolation {
                 grids[row][col] = OPEN;
                 connect(row, col);
                 watering(row, col);
+                int[] pos = find(row, col);
                 if (row == width - 1) {
-                    int[] pos = find(row, col);
                     toBottom[pos[0]][pos[1]] = true;
-                    if (isFull(pos[0], pos[1])) percolated = true;
                 };
+                if (isFull(row, col) && toBottom[pos[0]][pos[1]]) percolated = true;
             }
         }
     }
