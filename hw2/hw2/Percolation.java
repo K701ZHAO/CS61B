@@ -140,6 +140,10 @@ public class Percolation {
     public int numberOfOpenSites() { return openSites; }
 
     public boolean percolates() {
+        boolean percolated = false;
+        for(int i = 0; i < width; i++) {
+            if (isFull(width-1, i)) percolated = true;
+        }
         return percolated;
     }
 }
