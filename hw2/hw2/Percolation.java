@@ -3,10 +3,10 @@ package hw2;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    static boolean OPEN = true;
-    static boolean BLOCK = false;
-    static boolean FULL = true;
-    static boolean EMPTY = false;
+    private static boolean OPEN = true;
+    private static boolean BLOCK = false;
+    private static boolean FULL = true;
+    private static boolean EMPTY = false;
 
     private int width;
     private int openSites;
@@ -62,7 +62,10 @@ public class Percolation {
         if (isOpen(row1, col1) && isOpen(row2, col2)) {
             int ufPos1 = mapPos2uf(row1, col1);
             int ufPos2 = mapPos2uf(row2, col2);
+            boolean full = isFull(row1, col1) || isFull(row2, col2);
             uf.union(ufPos1, ufPos2);
+            int[] pos = find(row1, col1);
+            fullInd[pos[0]][pos[1]] = full;
         }
     }
 
