@@ -14,6 +14,7 @@ public class Percolation {
     private WeightedQuickUnionUF uf;
     private boolean[][] grids;
     private boolean[][] fullInd;
+    private boolean[][] toBottom;
 
     public Percolation(int N) {
         if (N <= 0) throw new java.lang.IllegalArgumentException();
@@ -24,12 +25,15 @@ public class Percolation {
 
         grids = new boolean[N][];
         fullInd = new boolean[N][];
+        toBottom = new boolean[N][];
         for (int i = 0; i < N; i += 1) {
             grids[i] = new boolean[N];
             fullInd[i] = new boolean[N];
+            toBottom[i] = new boolean[N];
             for(int j = 0; j < N; j += 1) {
                 grids[i][j] = BLOCK;
                 fullInd[i][j] = EMPTY;
+                toBottom[i][j] = false;
             }
         }
     }
@@ -63,9 +67,14 @@ public class Percolation {
             int ufPos1 = mapPos2uf(row1, col1);
             int ufPos2 = mapPos2uf(row2, col2);
             boolean full = isFull(row1, col1) || isFull(row2, col2);
+            int[] findPos1 = find(row1, col1);
+            int[] findPos2 = find(row2, col2);
+            boolean bottom = toBottom[findPos1[0]][findPos1[1]] || toBottom[findPos2[0]][findPos2[1]];
             uf.union(ufPos1, ufPos2);
             int[] pos = find(row1, col1);
             fullInd[pos[0]][pos[1]] = full;
+            toBottom[pos[0]][pos[1]] = bottom;
+            if (bottom && full) percolated = true;
         }
     }
 
@@ -120,7 +129,11 @@ public class Percolation {
                 grids[row][col] = OPEN;
                 connect(row, col);
                 watering(row, col);
-                if (row == width - 1 && isFull(row, col)) percolated = true;
+                if (row == width - 1) {
+                    int[] pos = find(row, col);
+                    toBottom[pos[0]][pos[1]] = true;
+                    if (isFull(pos[0], pos[1])) percolated = true;
+                };
             }
         }
     }
@@ -140,10 +153,6 @@ public class Percolation {
     public int numberOfOpenSites() { return openSites; }
 
     public boolean percolates() {
-        boolean percolated = false;
-        for(int i = 0; i < width; i++) {
-            if (isFull(width-1, i)) percolated = true;
-        }
         return percolated;
     }
 }
