@@ -10,9 +10,12 @@ public class PercolationStats {
     private  Percolation[] percolations;
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
+        if (N <= 0 || T <= 0){
+            throw new java.lang.IllegalArgumentException();
+        }
         exprTimes = T;
         width = N;
-        percolations = new Percolation[N];
+        percolations = new Percolation[T];
         for(int i = 0; i < T; i += 1) {
             percolations[i] = pf.make(N);
             percolate(percolations[i]);

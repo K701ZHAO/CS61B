@@ -126,7 +126,11 @@ public class Percolation {
             if (!isOpen(row, col)) {
                 openSites++;
                 grids[row][col] = OPEN;
-                connect(row, col);
+                if (width > 1) {
+                    connect(row, col);
+                } else {
+                    fullInd[row][col] = FULL;
+                }
                 watering(row, col);
                 int[] pos = find(row, col);
                 if (row == width - 1) {
