@@ -49,7 +49,7 @@ public class PercolationStats {
     private int[] openSites() {
         int[] sitesList = new int[exprTimes];
         for(int i = 0; i < exprTimes; i += 1) {
-            sitesList[i] = percolations[i].numberOfOpenSites();
+            sitesList[i] = percolations[i].numberOfOpenSites()/(width * width);
         }
         return sitesList;
     }
