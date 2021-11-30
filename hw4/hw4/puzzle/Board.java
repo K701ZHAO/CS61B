@@ -125,7 +125,9 @@ public class Board implements WorldState {
         return manhattan();
     }
 
-    public boolean equals(Board other) {
+    public boolean equals(Object o) {
+        if (o == null) return false;
+        Board other = (Board) o;
         if (N != other.N) return false;
         for(int i = 0; i < N; i++) {
             for(int j = 0; j < N; j++) {
@@ -133,6 +135,10 @@ public class Board implements WorldState {
             }
         }
         return true;
+    }
+
+    public int hashCode() {
+        return 0;
     }
 
     /** Returns the string representation of the board.
