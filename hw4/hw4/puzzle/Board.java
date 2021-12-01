@@ -126,8 +126,16 @@ public class Board implements WorldState {
     }
 
     public boolean equals(Object o) {
-        if (o == null) return false;
-        return toString().equals(o.toString());
+        if (o == this) return true;
+        if (o == null || o.getClass() != this.getClass()) return false;
+        Board other = (Board) o;
+        for(int i = 0; i < N; i++) {
+            for(int j = 0; j < N; j++) {
+                if (other.tileAt(i, j) != tileAt(i, j))
+                    return false;
+            }
+        }
+        return true;
     }
 
     public int hashCode() {
